@@ -130,6 +130,37 @@ describe('TableCard', () => {
     expect(getAllByText('Link').length).toEqual(11);
     expect(document.querySelector('a').getAttribute('href')).toEqual('https://ibm.com/73005');
   });
+  test('empty table is rendered properly if card variables are set', () => {
+    const tableLinkColumns = [
+      ...tableColumns,
+      {
+        dataSourceId: 'deviceId',
+        label: 'deviceId',
+      },
+      {
+        dataSourceId: 'Link',
+        label: 'Link',
+        linkTemplate: {
+          href: 'https://ibm.com/{deviceId}',
+          target: '_blank',
+        },
+      },
+    ];
+
+    const { getByText } = render(
+      <TableCard
+        title="Asset Open Alerts"
+        id="table-list"
+        tooltip="Here's a Tooltip"
+        content={{
+          columns: tableLinkColumns,
+        }}
+        values={[]}
+        size={CARD_SIZES.LARGE}
+      />
+    );
+    expect(getByText('There is no data for this time range.')).toBeInTheDocument();
+  });
   test('Clicked row actions', () => {
     const onCardAction = jest.fn();
 

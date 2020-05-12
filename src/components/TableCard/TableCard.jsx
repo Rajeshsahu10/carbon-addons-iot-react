@@ -6,6 +6,7 @@ import isNil from 'lodash/isNil';
 import uniqBy from 'lodash/uniqBy';
 import cloneDeep from 'lodash/cloneDeep';
 import capitalize from 'lodash/capitalize';
+import isEmpty from 'lodash/isEmpty';
 import OverFlowMenuIcon from '@carbon/icons-react/es/overflow-menu--vertical/20';
 
 import { CardPropTypes, TableCardPropTypes } from '../../constants/CardPropTypes';
@@ -673,6 +674,9 @@ const TableCard = ({
     />
   );
 
+  // If values is empty, do not render empty rows created by cardVariables
+  const isValuesEmpty = isEmpty(valuesProp);
+
   return (
     <Card
       id={id}
@@ -690,7 +694,7 @@ const TableCard = ({
         return (
           <StyledStatefulTable
             columns={columnsToRender}
-            data={tableDataWithTimestamp}
+            data={isValuesEmpty ? [] : tableDataWithTimestamp}
             id={`table-for-card-${id}`}
             isExpanded={isExpanded}
             secondaryTitle={title}
